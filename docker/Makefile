@@ -2,35 +2,36 @@ DOCKER_REPO := blockscout
 BACKEND_APP_NAME := blockscout
 FRONTEND_APP_NAME := frontend
 BACKEND_CONTAINER_IMAGE := $(DOCKER_REPO)/$(BACKEND_APP_NAME)
-BACKEND_CONTAINER_NAME := backend
-FRONTEND_CONTAINER_NAME := frontend
-VISUALIZER_CONTAINER_NAME := visualizer
-SIG_PROVIDER_CONTAINER_NAME := sig-provider
-STATS_CONTAINER_NAME := stats
-STATS_DB_CONTAINER_NAME := stats-db
-PROXY_CONTAINER_NAME := proxy
-PG_CONTAINER_NAME := postgres
+BACKEND_CONTAINER_NAME := backend-testchain
+FRONTEND_CONTAINER_NAME := frontend-testchain
+VISUALIZER_CONTAINER_NAME := visualizer-testchain
+SIG_PROVIDER_CONTAINER_NAME := sig-provider-testchain
+STATS_CONTAINER_NAME := stats-testchain
+STATS_DB_CONTAINER_NAME := stats-db-testchain
+PROXY_CONTAINER_NAME := proxy-testchain
+PG_CONTAINER_NAME := postgres-testchain
+SC_CONTAINER_NAME := smart-contract-verifier-testchain
 RELEASE_VERSION ?= '6.2.0'
 TAG := $(RELEASE_VERSION)-commit-$(shell git log -1 --pretty=format:"%h")
 STABLE_TAG := $(RELEASE_VERSION)
 
 start:
 	@echo "==> Starting smart contract verifier"
-	@docker-compose -f ../docker-compose/services/smart-contract-verifier.yml up -d
+	@docker-compose -f ../docker-compose/services/smart-contract-verifier-testchain.yml up -d
 	@echo "==> Starting blockscout db"
-	@docker-compose -f ../docker-compose/services/db.yml up -d
+	@docker-compose -f ../docker-compose/services/db-testchain.yml up -d
 	@echo "==> Starting blockscout backend"
-	@docker-compose -f ../docker-compose/services/backend.yml up -d
+	@docker-compose -f ../docker-compose/services/backend-testchain.yml up -d
 	@echo "==> Starting stats microservice"
-	@docker-compose -f ../docker-compose/services/stats.yml up -d
+	@docker-compose -f ../docker-compose/services/stats-testchain.yml up -d
 	@echo "==> Starting visualizer microservice"
-	@docker-compose -f ../docker-compose/services/visualizer.yml up -d
+	@docker-compose -f ../docker-compose/services/visualizer-testchain.yml up -d
 	@echo "==> Starting sig-provider microservice"
-	@docker-compose -f ../docker-compose/services/sig-provider.yml up -d
+	@docker-compose -f ../docker-compose/services/sig-provider-testchain.yml up -d
 	@echo "==> Starting blockscout frontend"
-	@docker-compose -f ../docker-compose/services/frontend.yml up -d
+	@docker-compose -f ../docker-compose/services/frontend-testchain.yml up -d
 	@echo "==> Starting Nginx proxy"
-	@docker-compose -f ../docker-compose/services/nginx.yml up -d
+	@docker-compose -f ../docker-compose/services/nginx-testchain.yml up -d
 
 BS_BACKEND_STARTED := $(shell docker ps --no-trunc --filter name=^/${BACKEND_CONTAINER_NAME}$  | grep ${BACKEND_CONTAINER_NAME})
 BS_FRONTEND_STARTED := $(shell docker ps --no-trunc --filter name=^/${FRONTEND_CONTAINER_NAME}$  | grep ${FRONTEND_CONTAINER_NAME})
