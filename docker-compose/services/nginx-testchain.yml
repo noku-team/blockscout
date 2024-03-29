@@ -11,6 +11,11 @@ services:
     environment:
       BACK_PROXY_PASS: ${BACK_PROXY_PASS:-http://backend-testchain:4000}
       FRONT_PROXY_PASS: ${FRONT_PROXY_PASS:-http://frontend-testchain:3000}
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.blockscout-3achain-testnet.rule=Host(`explorertest.3achain.org`)
+      - traefik.http.routers.blockscout-3achain-testnet.entrypoints=web
+      - traefik.http.services.blockscout-3achain-testnet.loadbalancer.server.port=${BLOCKSCOUT_RETRIEVE_PORT}
     ports:
       - target: 80
         published: 4020
@@ -18,3 +23,5 @@ services:
         published: 8090
       - target: 8081
         published: 8091
+    env_file:
+      -  ../envs/common-blockscout.env
