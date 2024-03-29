@@ -17,21 +17,21 @@ STABLE_TAG := $(RELEASE_VERSION)
 
 start:
 	@echo "==> Starting smart contract verifier"
-	@docker-compose -f ../docker-compose/services/smart-contract-verifier-testchain.yml up -d --remove-orphans
+	@docker-compose -f ../docker-compose/services/smart-contract-verifier-testchain.yml up -d
 	@echo "==> Starting blockscout db"
-	@docker-compose -f ../docker-compose/services/db-testchain.yml up -d --remove-orphans
+	@docker-compose -f ../docker-compose/services/db-testchain.yml up -d 
 	@echo "==> Starting blockscout backend"
-	@docker-compose -f ../docker-compose/services/backend-testchain.yml up -d --remove-orphans
+	@docker-compose -f ../docker-compose/services/backend-testchain.yml up -d
 	@echo "==> Starting stats microservice"
-	@docker-compose -f ../docker-compose/services/stats-testchain.yml up -d --remove-orphans
+	@docker-compose -f ../docker-compose/services/stats-testchain.yml up -d 
 	@echo "==> Starting visualizer microservice"
-	@docker-compose -f ../docker-compose/services/visualizer-testchain.yml up -d --remove-orphans
+	@docker-compose -f ../docker-compose/services/visualizer-testchain.yml up -d 
 	@echo "==> Starting sig-provider microservice"
-	@docker-compose -f ../docker-compose/services/sig-provider-testchain.yml up -d --remove-orphans
+	@docker-compose -f ../docker-compose/services/sig-provider-testchain.yml up -d 
 	@echo "==> Starting blockscout frontend"
-	@docker-compose -f ../docker-compose/services/frontend-testchain.yml up -d --remove-orphans
+	@docker-compose -f ../docker-compose/services/frontend-testchain.yml up -d
 	@echo "==> Starting Nginx proxy"
-	@docker-compose -f ../docker-compose/services/nginx-testchain.yml up -d --remove-orphans
+	@docker-compose -f ../docker-compose/services/nginx-testchain.yml up -d
 
 BS_BACKEND_STARTED := $(shell docker ps --no-trunc --filter name=^/${BACKEND_CONTAINER_NAME}$  | grep ${BACKEND_CONTAINER_NAME})
 BS_FRONTEND_STARTED := $(shell docker ps --no-trunc --filter name=^/${FRONTEND_CONTAINER_NAME}$  | grep ${FRONTEND_CONTAINER_NAME})
