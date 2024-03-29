@@ -19,9 +19,15 @@ services:
     ports:
       - target: 80
         published: 4020
+        protocol: tcp
+        mode: host
       - target: 8080
         published: 8090
+        protocol: tcp
+        mode: host
       - target: 8081
         published: 8091
+        protocol: tcp
+        mode: host
     env_file:
-      -  ../envs/common-blockscout.env
+      - ../envs/common-blockscout.env
