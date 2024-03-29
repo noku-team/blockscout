@@ -9,3 +9,5 @@ services:
     container_name: 'frontend-testchain'
     env_file:
       -  ../envs/common-frontend.env
+    environment:
+      - NEXT_PUBLIC_API_HOST=explorertest.3achain.org
