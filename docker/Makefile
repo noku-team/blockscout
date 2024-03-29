@@ -17,21 +17,21 @@ STABLE_TAG := $(RELEASE_VERSION)
 
 start:
 	@echo "==> Starting smart contract verifier"
-	@docker-compose -f ../docker-compose/services/smart-contract-verifier-testchain.yml up -d
+	@docker-compose -f ../docker-compose/services/smart-contract-verifier-testchain.yml up -d --remove-orphans
 	@echo "==> Starting blockscout db"
-	@docker-compose -f ../docker-compose/services/db-testchain.yml up -d
+	@docker-compose -f ../docker-compose/services/db-testchain.yml up -d --remove-orphans
 	@echo "==> Starting blockscout backend"
-	@docker-compose -f ../docker-compose/services/backend-testchain.yml up -d
+	@docker-compose -f ../docker-compose/services/backend-testchain.yml up -d --remove-orphans
 	@echo "==> Starting stats microservice"
-	@docker-compose -f ../docker-compose/services/stats-testchain.yml up -d
+	@docker-compose -f ../docker-compose/services/stats-testchain.yml up -d --remove-orphans
 	@echo "==> Starting visualizer microservice"
-	@docker-compose -f ../docker-compose/services/visualizer-testchain.yml up -d
+	@docker-compose -f ../docker-compose/services/visualizer-testchain.yml up -d --remove-orphans
 	@echo "==> Starting sig-provider microservice"
-	@docker-compose -f ../docker-compose/services/sig-provider-testchain.yml up -d
+	@docker-compose -f ../docker-compose/services/sig-provider-testchain.yml up -d --remove-orphans
 	@echo "==> Starting blockscout frontend"
-	@docker-compose -f ../docker-compose/services/frontend-testchain.yml up -d
+	@docker-compose -f ../docker-compose/services/frontend-testchain.yml up -d --remove-orphans
 	@echo "==> Starting Nginx proxy"
-	@docker-compose -f ../docker-compose/services/nginx-testchain.yml up -d
+	@docker-compose -f ../docker-compose/services/nginx-testchain.yml up -d --remove-orphans
 
 BS_BACKEND_STARTED := $(shell docker ps --no-trunc --filter name=^/${BACKEND_CONTAINER_NAME}$  | grep ${BACKEND_CONTAINER_NAME})
 BS_FRONTEND_STARTED := $(shell docker ps --no-trunc --filter name=^/${FRONTEND_CONTAINER_NAME}$  | grep ${FRONTEND_CONTAINER_NAME})
@@ -78,7 +78,7 @@ else
 endif
 ifdef BS_SIG_PROVIDER_STARTED
 	@echo "==> Stopping Blockscout sig-provider container."
-	@docker stop $(SIG_PROVIDER_CONTAINER_NAME) && docker rm -f $(SIG_PROVIDER_CONTAINER_NAME)
+	@docker stop $(SIG_PROVIDER_CONTAINER_NAME)  && docker rm -f $(SIG_PROVIDER_CONTAINER_NAME)
 	@echo "==> Blockscout sig-provider container stopped."
 else
 	@echo "==> Blockscout sig-provider container already stopped before."
