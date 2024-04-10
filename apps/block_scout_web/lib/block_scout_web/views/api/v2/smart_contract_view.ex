@@ -338,10 +338,12 @@ defmodule BlockScoutWeb.API.V2.SmartContractView do
 
   def render_json(value, type) when is_list(value) do
     type =
-      if String.ends_with?(type, "[]") do
-        String.slice(type, 0..-3)
-      else
-        type
+      case FunctionSelector.decode_type(type) do
+        {:array, item_type, _} ->
+          item_type
+
+        {:array, item_type} ->
+          item_type
       end
 
     value |> Enum.map(&render_json(&1, type))
