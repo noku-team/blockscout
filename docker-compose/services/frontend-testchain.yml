@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   frontend:
-    image: docker pull ghcr.io/noku-team/blockscout-frontend:main
+    image: ghcr.io/blockscout/frontend
     pull_policy: always
     platform: linux/amd64
     restart: always
