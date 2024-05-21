@@ -22,11 +22,7 @@ start:
 	@docker-compose -f ../docker-compose/services/db-testchain.yml up -d 
 	@echo "==> Starting blockscout backend"
 	@docker-compose -f ../docker-compose/services/backend-testchain.yml up -d
-	@echo "==> Starting stats microservice"
-	@docker-compose -f ../docker-compose/services/stats-testchain.yml up -d 
 	@echo "==> Starting visualizer microservice"
-	@docker-compose -f ../docker-compose/services/visualizer-testchain.yml up -d 
-	@echo "==> Starting sig-provider microservice"
 	@docker-compose -f ../docker-compose/services/sig-provider-testchain.yml up -d 
 	@echo "==> Starting blockscout frontend"
 	@docker-compose -f ../docker-compose/services/frontend-testchain.yml up -d
