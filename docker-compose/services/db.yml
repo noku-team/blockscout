@@ -24,7 +24,7 @@ services:
         POSTGRES_PASSWORD: 'ceWb1MeLBEeOIfk65gU8EjF8'
     ports:
       - target: 5432
-        published: 7432
+        published: 6432
     volumes:
       - ./blockscout-db-data:/var/lib/postgresql/data
     healthcheck:
