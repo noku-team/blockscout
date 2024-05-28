@@ -3,30 +3,30 @@ version: '3.9'
 services:
   proxy:
     image: nginx
-    container_name: proxy
+    container_name: proxy-testchain
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     volumes:
       - "../proxy:/etc/nginx/templates"
     environment:
-      BACK_PROXY_PASS: ${BACK_PROXY_PASS:-http://backend:4000}
-      FRONT_PROXY_PASS: ${FRONT_PROXY_PASS:-http://frontend:3000}
+      BACK_PROXY_PASS: ${BACK_PROXY_PASS:-http://backend-testchain:4000}
+      FRONT_PROXY_PASS: ${FRONT_PROXY_PASS:-http://frontend-testchain:3000}
     labels:
       - traefik.enable=true
-      - traefik.http.routers.blockscout-3achain-testnet.rule=Host(`explorer.3achain.org`)
+      - traefik.http.routers.blockscout-3achain-testnet.rule=Host(`explorertest.3achain.org`)
       - traefik.http.routers.blockscout-3achain-testnet.entrypoints=web
       - traefik.http.services.blockscout-3achain-testnet.loadbalancer.server.port=${BLOCKSCOUT_RETRIEVE_PORT}
     ports:
       - target: 80
-        published: 4020
+        published: 4120
         protocol: tcp
         mode: host
-      - target: 8190
-        published: 8190
+      - target: 8080
+        published: 8180
         protocol: tcp
         mode: host
-      - target: 8191
-        published: 8191
+      - target: 8081
+        published: 8181
         protocol: tcp
         mode: host
     env_file:
