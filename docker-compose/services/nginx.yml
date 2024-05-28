@@ -21,11 +21,11 @@ services:
         published: 4020
         protocol: tcp
         mode: host
-      - target: 8080
+      - target: 8090
         published: 8090
         protocol: tcp
         mode: host
-      - target: 8081
+      - target: 8091
         published: 8091
         protocol: tcp
         mode: host
