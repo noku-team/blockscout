@@ -19,15 +19,15 @@ start:
 	@echo "==> Starting smart contract verifier"
 	@docker-compose -p mainnet -f ../docker-compose/services/smart-contract-verifier.yml up -d 
 	@echo "==> Starting blockscout db"
-	@docker-compose -p mainnet -f ../docker-compose/services/db.yml up -d -p mainnet
+	@docker-compose -p mainnet -f ../docker-compose/services/db.yml up -d
 	@echo "==> Starting blockscout backend"
-	@docker-compose -p mainnet -f ../docker-compose/services/backend.yml up -d -p mainnet
+	@docker-compose -p mainnet -f ../docker-compose/services/backend.yml up -d 
 	@echo "==> Starting visualizer microservice"
-	@docker-compose -p mainnet -f ../docker-compose/services/sig-provider.yml up -d -p mainnet
+	@docker-compose -p mainnet -f ../docker-compose/services/sig-provider.yml up -d
 	@echo "==> Starting blockscout frontend"
-	@docker-compose -p mainnet -f ../docker-compose/services/frontend.yml up -d -p mainnet
+	@docker-compose -p mainnet -f ../docker-compose/services/frontend.yml up -d
 	@echo "==> Starting Nginx proxy"
-	@docker-compose -p mainnet -f ../docker-compose/services/nginx.yml up -d -p mainnet
+	@docker-compose -p mainnet -f ../docker-compose/services/nginx.yml up -d
 
 BS_BACKEND_STARTED := $(shell docker ps --no-trunc --filter name=^/${BACKEND_CONTAINER_NAME}$  | grep ${BACKEND_CONTAINER_NAME})
 BS_FRONTEND_STARTED := $(shell docker ps --no-trunc --filter name=^/${FRONTEND_CONTAINER_NAME}$  | grep ${FRONTEND_CONTAINER_NAME})
