@@ -21,12 +21,12 @@ services:
         published: 4020
         protocol: tcp
         mode: host
-      - target: 8090
-        published: 8090
+      - target: 8190
+        published: 8190
         protocol: tcp
         mode: host
-      - target: 8091
-        published: 8091
+      - target: 8191
+        published: 8191
         protocol: tcp
         mode: host
     env_file:
