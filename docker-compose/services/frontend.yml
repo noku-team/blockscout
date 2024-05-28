@@ -6,7 +6,7 @@ services:
     pull_policy: always
     platform: linux/amd64
     restart: always
-    container_name: 'frontend-testchain'
+    container_name: 'frontend'
     env_file:
       -  ../envs/common-frontend.env
     environment:
