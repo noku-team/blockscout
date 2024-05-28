@@ -14,9 +14,9 @@ services:
       FRONT_PROXY_PASS: ${FRONT_PROXY_PASS:-http://frontend:3000}
     labels:
       - traefik.enable=true
-      - traefik.http.routers.blockscout-3achain-testnet.rule=Host(`explorertest.3achain.org`)
-      - traefik.http.routers.blockscout-3achain-testnet.entrypoints=web
-      - traefik.http.services.blockscout-3achain-testnet.loadbalancer.server.port=${BLOCKSCOUT_RETRIEVE_PORT}
+      - traefik.http.routers.blockscout-3achain.rule=Host(`explorertest.3achain.org`)
+      - traefik.http.routers.blockscout-3achain.entrypoints=web
+      - traefik.http.services.blockscout-3achain.loadbalancer.server.port=${BLOCKSCOUT_RETRIEVE_PORT}
     ports:
       - target: 80
         published: 4120
