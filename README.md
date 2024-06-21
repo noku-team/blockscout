@@ -1,51 +1,30 @@
-<h1 align="center">Blockscout</h1>
-<p align="center">Blockchain Explorer for inspecting and analyzing EVM Chains.</p>
-<div align="center">
+<h1 align="center">Blockscout - 3Achain</h1>
 
-[![Blockscout](https://github.com/blockscout/blockscout/workflows/Blockscout/badge.svg?branch=master)](https://github.com/blockscout/blockscout/actions)
-[![](https://dcbadge.vercel.app/api/server/blockscout?style=flat)](https://discord.gg/blockscout)
+Blockscout Repository: https://github.com/blockscout/blockscout
 
-</div>
+### Guide
 
+There are two configs avaiable in the repository `testnet` and `mainnet`, both of them require traefik to be configured beforehand.
+All of the configurations are properly set, however, there are some ENVs (secret keys) which needs to be manually set and are not preconfigured.
 
-Blockscout provides a comprehensive, easy-to-use interface for users to view, confirm, and inspect transactions on EVM (Ethereum Virtual Machine) blockchains. This includes Ethereum Mainnet, Ethereum Classic, Optimism, Gnosis Chain and many other **Ethereum testnets, private networks, L2s and sidechains**.
+### Testnet guide
 
-See our [project documentation](https://docs.blockscout.com/) for detailed information and setup instructions.
+```sh
+$ git clone https://github.com/noku-team/blockscout && cd blockscout # Clone the repository
+$ git checkout testnet # checkout to the a3chain testnet config set.
+$ cd docker && make start # Start all services
+```
 
-For questions, comments and feature requests see the [discussions section](https://github.com/blockscout/blockscout/discussions) or via [Discord](https://discord.com/invite/blockscout).
+### Mainnet guide
 
-## About Blockscout
+```sh
+$ git clone https://github.com/noku-team/blockscout && cd blockscout # Clone the repository
+$ git checkout mainnet # checkout to the a3chain testnet config set.
+$ cd docker && make start # Start all services
+```
 
-Blockscout allows users to search transactions, view accounts and balances, verify and interact with smart contracts and view and interact with applications on the Ethereum network including many forks, sidechains, L2s and testnets.
+### Keys that need to be added manually
 
-Blockscout is an open-source alternative to centralized, closed source block explorers such as Etherscan, Etherchain and others.  As Ethereum sidechains and L2s continue to proliferate in both private and public settings, transparent, open-source tools are needed to analyze and validate all transactions.
-
-## Supported Projects
-
-Blockscout currently supports several hundred chains and rollups throughout the greater blockchain ecosystem. Ethereum, Cosmos, Polkadot, Avalanche, Near and many others include Blockscout integrations. [A comprehensive list is available here](https://docs.blockscout.com/about/projects). If your project is not listed, please submit a PR or [contact the team in Discord](https://discord.com/invite/blockscout).
-
-## Getting Started
-
-See the [project documentation](https://docs.blockscout.com/) for instructions:
-
-- [Manual deployment](https://docs.blockscout.com/for-developers/deployment/manual-deployment-guide)
-- [Docker-compose deployment](https://docs.blockscout.com/for-developers/deployment/docker-compose-deployment)
-- [Kubernetes deployment](https://docs.blockscout.com/for-developers/deployment/kubernetes-deployment)
-- [Manual deployment (backend + old UI)](https://docs.blockscout.com/for-developers/deployment/manual-old-ui)
-- [Ansible deployment](https://docs.blockscout.com/for-developers/ansible-deployment)
-- [ENV variables](https://docs.blockscout.com/for-developers/information-and-settings/env-variables)
-- [Configuration options](https://docs.blockscout.com/for-developers/configuration-options)
-
-## Acknowledgements
-
-We would like to thank the [EthPrize foundation](http://ethprize.io/) for their funding support.
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution and pull request protocol. We expect contributors to follow our [code of conduct](CODE_OF_CONDUCT.md) when submitting code or comments.
-
-## License
-
-[![License: GPL v3.0](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-
-This project is licensed under the GNU General Public License v3.0. See the [LICENSE](LICENSE) file for details.
+The following Keys needs to be manually set:
+* SECRET_KEY_BASE: necessary to sign cookies
+* RE_CAPTCHA_SECRET_KEY, RE_CAPTCHA_CLIENT_KEY: necessary both for frontend and backend, these are google captchas keys.
