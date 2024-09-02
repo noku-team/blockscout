@@ -17,3 +17,6 @@ services:
       BLOCK_TRANSFORMER: 'clique'
     volumes:
       - ./logs/:/app/logs/
+    logging:
+      options:
+        max-size: 1g
