@@ -33,3 +33,6 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
+    logging:
+      options:
+        max-size: 1g
