@@ -31,3 +31,6 @@ services:
         mode: host
     env_file:
       - ../envs/common-blockscout.env
+    logging:
+      options:
+        max-size: 1g
