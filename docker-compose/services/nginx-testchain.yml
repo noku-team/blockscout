@@ -29,6 +29,7 @@ services:
         published: 8091
         protocol: tcp
         mode: host
+    restart: always
     env_file:
       - ../envs/common-blockscout.env
     logging:
