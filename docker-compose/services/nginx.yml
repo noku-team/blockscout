@@ -1,11 +1,11 @@
-version: '3.9'
+version: "3.9"
 
 services:
   proxy:
     image: nginx
     container_name: proxy
     extra_hosts:
-      - 'host.docker.internal:host-gateway'
+      - "host.docker.internal:host-gateway"
     volumes:
       - "../proxy:/etc/nginx/templates"
     environment:
@@ -13,9 +13,9 @@ services:
       FRONT_PROXY_PASS: ${FRONT_PROXY_PASS:-http://frontend:3000}
     labels:
       - traefik.enable=true
-      - traefik.http.routers.blockscout-3achain-mainnet.rule=Host(`explorer.3achain.org`)
-      - traefik.http.routers.blockscout-3achain-mainnet.entrypoints=web
-      - traefik.http.services.blockscout-3achain-mainnet.loadbalancer.server.port=${BLOCKSCOUT_RETRIEVE_PORT}
+      - traefik.http.routers.blockscout-swiss-ledger-mainnet.rule=Host(`explorer.ledger.swiss`)
+      - traefik.http.routers.blockscout-swiss-ledger-mainnet.entrypoints=web
+      - traefik.http.services.blockscout-swiss-ledger-mainnet.loadbalancer.server.port=${BLOCKSCOUT_RETRIEVE_PORT}
     ports:
       - target: 80
         published: 4120
@@ -29,6 +29,7 @@ services:
         published: 8181
         protocol: tcp
         mode: host
+    restart: always
     env_file:
       - ../envs/common-blockscout.env
     logging:
