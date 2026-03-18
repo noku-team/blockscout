@@ -130,7 +130,7 @@ defmodule Indexer.Block.Catchup.Fetcher do
     if first < last, do: blocks_batch_size, else: -1 * blocks_batch_size
   end
 
-  @async_import_remaining_block_data_options ~w(address_hash_to_fetched_balance_block_number)a
+  @async_import_remaining_block_data_options ~w(address_hash_to_fetched_balance_block_number metadata_updates)a
 
   @impl Block.Fetcher
   def import(_block_fetcher, options) when is_map(options) do
@@ -167,6 +167,7 @@ defmodule Indexer.Block.Catchup.Fetcher do
     async_import_replaced_transactions(imported)
     async_import_token_instances(imported)
     async_import_blobs(imported)
+    async_import_metadata_updates(%{metadata_updates: Map.get(options, :metadata_updates, [])})
   end
 
   defp stream_fetch_and_import(state, sequence)
