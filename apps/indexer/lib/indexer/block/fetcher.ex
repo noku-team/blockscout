@@ -38,6 +38,7 @@ defmodule Indexer.Block.Fetcher do
     AddressCoinBalances,
     Addresses,
     AddressTokenBalances,
+    MetadataUpdates,
     MintTransfers,
     TokenInstances,
     TokenTransfers,
@@ -152,6 +153,7 @@ defmodule Indexer.Block.Fetcher do
          %{token_transfers: token_transfers, tokens: tokens} = TokenTransfers.parse(logs),
          %{transaction_actions: transaction_actions} = TransactionActions.parse(logs),
          %{mint_transfers: mint_transfers} = MintTransfers.parse(logs),
+         %{metadata_updates: metadata_updates} = MetadataUpdates.parse(logs),
          optimism_withdrawals =
            if(callback_module == Indexer.Block.Realtime.Fetcher, do: OptimismWithdrawals.parse(logs), else: []),
          polygon_edge_withdrawals =
@@ -218,7 +220,8 @@ defmodule Indexer.Block.Fetcher do
            tokens: %{params: tokens},
            transactions: %{params: transactions_with_receipts},
            withdrawals: %{params: withdrawals_params},
-           token_instances: %{params: token_instances}
+           token_instances: %{params: token_instances},
+           metadata_updates: metadata_updates
          },
          chain_type_import_options = %{
            transactions_with_receipts: transactions_with_receipts,
@@ -355,6 +358,16 @@ defmodule Indexer.Block.Fetcher do
   end
 
   def async_import_token_instances(_), do: :ok
+
+  def async_import_metadata_updates(%{metadata_updates: metadata_updates}) when metadata_updates != [] do
+    Chain.invalidate_token_instance_metadata(metadata_updates)
+
+    if not TokenInstanceRealtime.Supervisor.disabled?() do
+      Indexer.BufferedTask.buffer(TokenInstanceRealtime, metadata_updates)
+    end
+  end
+
+  def async_import_metadata_updates(_), do: :ok
 
   def async_import_blobs(%{blocks: blocks}) do
     timestamps =

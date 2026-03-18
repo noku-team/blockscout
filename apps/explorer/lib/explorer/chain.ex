@@ -3740,6 +3740,27 @@ defmodule Explorer.Chain do
   end
 
   @doc """
+  Invalidates cached metadata for the given token instances so they become eligible
+  for re-fetching. Sets both `metadata` and `error` to NULL and updates `updated_at`.
+
+  Accepts a list of `%{contract_address_hash: hash, token_id: id}` maps.
+  """
+  @spec invalidate_token_instance_metadata([map()]) :: {non_neg_integer(), nil}
+  def invalidate_token_instance_metadata([]), do: {0, nil}
+
+  def invalidate_token_instance_metadata(token_instances) when is_list(token_instances) do
+    now = DateTime.utc_now()
+
+    token_instances
+    |> Enum.reduce(Instance, fn %{contract_address_hash: address_hash, token_id: token_id}, query ->
+      from(ti in query,
+        or_where: ti.token_contract_address_hash == ^address_hash and ti.token_id == ^token_id
+      )
+    end)
+    |> Repo.update_all(set: [metadata: nil, error: nil, updated_at: now])
+  end
+
+  @doc """
   Update a new `t:Token.t/0` record.
 
   As part of updating token, an additional record is inserted for

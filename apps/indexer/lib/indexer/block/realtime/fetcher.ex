@@ -206,11 +206,12 @@ defmodule Indexer.Block.Realtime.Fetcher do
     Process.send_after(self(), :poll_latest_block_number, safe_polling_period)
   end
 
-  @import_options ~w(address_hash_to_fetched_balance_block_number)a
+  @import_options ~w(address_hash_to_fetched_balance_block_number metadata_updates)a
 
   @impl Block.Fetcher
   def import(_block_fetcher, %{block_rewards: block_rewards} = options) do
     {block_reward_errors, chain_import_block_rewards} = Map.pop(block_rewards, :errors)
+    metadata_updates = Map.get(options, :metadata_updates, [])
 
     chain_import_options =
       options
@@ -221,7 +222,7 @@ defmodule Indexer.Block.Realtime.Fetcher do
     with {:import, {:ok, imported} = ok} <- {:import, Chain.import(chain_import_options)} do
       async_import_remaining_block_data(
         imported,
-        %{block_rewards: %{errors: block_reward_errors}}
+        %{block_rewards: %{errors: block_reward_errors}, metadata_updates: metadata_updates}
       )
 
       ok
@@ -443,7 +444,7 @@ defmodule Indexer.Block.Realtime.Fetcher do
 
   defp async_import_remaining_block_data(
          imported,
-         %{block_rewards: %{errors: block_reward_errors}}
+         %{block_rewards: %{errors: block_reward_errors}} = options
        ) do
     async_import_realtime_coin_balances(imported)
     async_import_block_rewards(block_reward_errors)
@@ -456,5 +457,6 @@ defmodule Indexer.Block.Realtime.Fetcher do
     async_import_replaced_transactions(imported)
     async_import_blobs(imported)
     async_import_polygon_zkevm_bridge_l1_tokens(imported)
+    async_import_metadata_updates(%{metadata_updates: Map.get(options, :metadata_updates, [])})
   end
 end
