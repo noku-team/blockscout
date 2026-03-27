@@ -14,6 +14,7 @@ defmodule Indexer.Block.Catchup.Fetcher do
       async_import_coin_balances: 2,
       async_import_created_contract_codes: 1,
       async_import_internal_transactions: 1,
+      async_import_metadata_updates: 1,
       async_import_replaced_transactions: 1,
       async_import_tokens: 1,
       async_import_token_balances: 1,
