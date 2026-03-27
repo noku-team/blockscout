@@ -68,6 +68,43 @@ jobs:
           echo "ref_type: $REF_TYPE"
           echo "ref_name: $REF_NAME"
 
+      - name: Resolve image tags
+        id: resolve_tags
+        env:
+          DEFAULT_IMAGE: ghcr.io/noku-team/blockscout
+          INPUT_TAGS: ${{ inputs.tags }}
+          META_TAGS: ${{ steps.meta.outputs.tags }}
+        run: |
+          if [ -z "${INPUT_TAGS}" ]; then
+            {
+              echo "value<<EOF"
+              printf '%s\n' "${META_TAGS}"
+              echo "EOF"
+            } >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          normalized_tags="$(
+            printf '%s\n' "${INPUT_TAGS}" \
+              | tr ',' '\n' \
+              | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' \
+              | awk -v image="${DEFAULT_IMAGE}" '
+                  NF {
+                    if ($0 ~ /[\/]/ || $0 ~ /@sha256:/) {
+                      print $0
+                    } else {
+                      print image ":" $0
+                    }
+                  }
+                '
+          )"
+
+          {
+            echo "value<<EOF"
+            printf '%s\n' "${normalized_tags}"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
@@ -76,7 +113,7 @@ jobs:
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          tags: ${{ inputs.tags || steps.meta.outputs.tags }}
+          tags: ${{ steps.resolve_tags.outputs.value }}
           platforms: ${{ inputs.platforms }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
